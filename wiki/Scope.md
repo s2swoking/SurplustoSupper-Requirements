@@ -43,10 +43,11 @@ Standing projects include Foodbank, FoodHub, Cooks, Breakfast Club, Wraparound C
 Required capability:
 
 - Onboard recipient charities and projects.
-- Allocate eligible stock.
+- Create Planned or Ad hoc Redistribution records and allocate eligible stock in crates, kilograms, or units.
 - Assign and load crates to a van or collection.
-- Close the outbound movement and reduce inventory.
-- Record partial acceptance and returned stock.
+- Dispatch and complete the outbound movement without reducing inventory twice.
+- Record unsuccessful outcomes, partial acceptance, returned stock, and approved stock resolution.
+- Produce an auditable Redistribution Record with movement lineage and S2S operational confirmation.
 
 For MVP planning, Kitchen and Markets may be represented as recipient projects. Their specialised workflows remain later work.
 
@@ -61,4 +62,4 @@ For MVP planning, Kitchen and Markets may be represented as recipient projects. 
 
 The current application covers branch creation/switching, donor setup, Delivery ID intake, category weights, immutable inventory, controlled adjustments, recipient onboarding, manual allocation, loading, dispatch, completion, returns, use-by alerts, and operational dashboards.
 
-Still outside the current boundary are automated allocation, route/van optimisation, recurring charity cadence, partial acceptance beyond a returned-crate movement, stock transfers, and deeper Organisation reporting. Multi-unit inventory adjustments are now an agreed requirement but are not yet implemented.
+Still outside the implemented boundary are automated allocation, route/van optimisation, recurring recipient cadence, multi-recipient planning, partial acceptance beyond a returned-crate movement, Management-controlled unsuccessful outcomes with full stock reversal, generated Redistribution Records, spreadsheet-created Draft operational records, stock transfers, and deeper Organisation reporting. Multi-unit inventory adjustments are now an agreed requirement but are not yet implemented.

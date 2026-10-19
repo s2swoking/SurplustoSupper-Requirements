@@ -14,7 +14,7 @@ S2S has four principal operations:
 
 - Redistribution: collect surplus food from local businesses and deliver it to front-line charities and community groups.
 - Kitchen: turn food that might otherwise go to landfill into free meals.
-- Market: operate weekend surplus-food markets by donation, with proceeds supporting the van fleet.
+- Market: operate weekend surplus-food markets using voluntary financial contributions, with proceeds supporting the van fleet.
 - Events: provide corporate and private catering as a funding channel for the wider operation.
 
 Woking is a new hub operated by FoodWise under the Surplus to Supper banner. Existing hubs rely heavily on manual processes; Kingston also uploads information into Airtable for dashboard reporting. Woking needs an operational platform that begins with inbound intake and can grow into inventory and redistribution.

@@ -32,7 +32,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 | --- | --- | --- | --- | --- |
 | BG-001 | Operating background and tenancy | Draft | Foundation built | [Background](Background) |
 | SC-001 | Product scope and capability map | Draft | Core operations built | [Scope](Scope) |
-| PF-001 | Platform foundations | Draft | Core foundation built | [Tenancy, access, audit, CSV, live collaboration](Platform-Foundations) |
+| PF-001 | Platform foundations | Draft | Core foundation built; operational spreadsheet workflows planned | [Tenancy, access, audit, spreadsheet/CSV, live collaboration](Platform-Foundations) |
 | F-001 | Donor onboarding | Draft | Partial | [Donor onboarding](Donor-Onboarding) |
 | EF-001 | Create Delivery ID | Draft | Core flow built | [Create Delivery ID](Create-Delivery-ID) |
 | EF-002 | Maintain categories | Draft | Partial | [Maintain categories](Maintain-Categories) |
@@ -41,7 +41,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 | F-003 | Inventory management | Draft | Core flow built | [Inventory management](Inventory-Management) |
 | EF-004 | Inventory adjustment | Draft | Partial | [Inventory adjustment](Inventory-Adjustment) |
 | F-004 | Charity onboarding | Draft | Core flow built | [Charity onboarding](Charity-Onboarding) |
-| F-005 | Redistribution and fulfilment | Draft | Core flow built | [Redistribution and fulfilment](Redistribution-and-Fulfilment) |
+| F-005 | Redistribution | Draft | Core flow built; future capabilities specified | [Redistribution](Redistribution-and-Fulfilment) |
 | F-006 | Impact and operational reporting | Draft | Planned | [Impact and operational reporting](Impact-and-Operational-Reporting) |
 
 ## Delivery phases
@@ -65,6 +65,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 - Allocation, van loading, delivery/collection, and outbound logging.
 - Use-by alerts and first-expiring-first-out allocation support.
 - Donor cadence, expected-delivery reminders, and operational data-quality warnings.
+- Versioned spreadsheet templates that create new Draft Intake and Redistribution records without bypassing their normal review and stock-movement controls.
 
 ### Later phases
 
@@ -97,6 +98,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 - Inactive master records remain available to historical records but do not appear in new-work selectors.
 - A chilled category cannot be allocated to a recipient without chilled storage.
 - Standard van-ready time is 11:30.
+- S2S uses `Donor Delivery` and `Intake` for inbound stock and `Redistribution` for outbound stock; external platform terminology is translated at any integration boundary and is not used as an S2S entity or screen label.
 
 ## Open decisions
 

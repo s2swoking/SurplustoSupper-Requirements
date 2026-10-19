@@ -109,7 +109,7 @@ The report displays:
 
 - Expired/wasted kg by date, Branch, category, use-by date, and reason.
 - Miscount increases and decreases separately from waste.
-- Returns from charities separately from new donations.
+- Returns from recipients separately from new donor deliveries.
 - Adjustment quantity, entered unit, normalized kg, reason, actor, and timestamp.
 - Links to the original stock lot and any compensating reversal.
 
@@ -151,7 +151,7 @@ The report displays:
 - A totals table behind any chart so small categories and exact values remain accessible.
 - CSV export of category and storage-family totals and detail.
 
-The user selects one movement basis at a time, such as `Food received` or `Net redistributed`; the report must not combine stages into a single ambiguous total. S2S reports completed operational quantities and does not show Foodiverse-style `Estimate versus Actual` columns because no pre-donation estimate is captured. It also excludes price because S2S does not record product value.
+The user selects one movement basis at a time, such as `Food received` or `Net redistributed`; the report must not combine stages into a single ambiguous total. S2S reports completed operational quantities and does not show Foodiverse-style `Estimate versus Actual` columns because no pre-arrival quantity estimate is captured. It also excludes price because S2S does not record product value.
 
 ### 8. Donor cadence and delivery reliability report
 
@@ -217,7 +217,7 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 | Monetary value of food | Not captured | Excluded from reporting |
 | Donor/recipient labels and leaderboards | Not captured and not an S2S priority | Excluded unless a later S2S use case is approved |
 | Category mix by operational stage | Category and normalized kg exist on stock movements | Report completed received, redistributed, waste, or stock stages separately |
-| Estimate versus actual | No pre-donation estimate is captured | Excluded; completed S2S movement values are the operational record |
+| Estimate versus actual | No pre-arrival quantity estimate is captured | Excluded; completed S2S movement values are the operational record |
 | Food price/value | No price or valuation input is captured | Excluded from reports and exports |
 | Donor cadence/reliability | Delivery cadence is required but structured occurrence generation and outcomes are not implemented | Show donor contribution now; publish rates only after the denominator and outcome rules exist |
 | Donor offers/posts | S2S starts from a Management-created Delivery ID rather than a donor offer | Foodiverse offered/posted/process-success metrics do not apply |

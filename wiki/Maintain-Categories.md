@@ -51,7 +51,7 @@ Management adds a category or selects an existing category to edit.
 
 ## Initial category catalogue
 
-The initial catalogue is based on the supplied Foodiverse reference:
+The initial catalogue is based on the supplied Foodiverse reference. Labels are retained as shown in the reference and repeated rows across screenshots are listed once:
 
 1. Ambient meat
 2. Prepared ambient product with meat
@@ -65,6 +65,50 @@ The initial catalogue is based on the supplied Foodiverse reference:
 10. Bread and bread products
 11. Sweet and savoury bakery
 12. Whole or milled grain
+13. Flour and starches
+14. Pasta and noodles
+15. Breakfast cereals
+16. Soy products
+17. Ambient
+18. Water
+19. Ambient juice
+20. Soft drinks
+21. Tea and coffee
+22. Alcoholic beverages
+23. Ambient Grocery / Other
+24. Fats and oils
+25. Confectionary
+26. Other grocery
+27. Non food
+28. Chilled meat
+29. Prepared chilled product with meat
+30. Chilled fish
+31. Prepared chilled product with fish
+32. Chilled fruit
+33. Prepared chilled fruit
+34. Chilled vegetables
+35. Prepared chilled vegetables
+36. Dairy
+37. Chilled products with dairy and eggs
+38. Chilled Juice
+39. Chilled water based flavoured drinks
+40. Chilled Grocery / Other
+41. Frozen meat
+42. Prepared frozen product with meat
+43. Frozen fish
+44. Prepared frozen product with fish
+45. Prepared frozen fruit
+46. Prepared frozen vegetables
+47. Frozen products with dairy and eggs
+48. Frozen Grocery / Other
+49. Ice, sorbet and sherbet
+50. Hot meat
+51. Prepared hot product with meat
+52. Hot fish
+53. Prepared hot product with fish
+54. Prepared hot fruit
+55. Prepared hot vegetables
+56. Hot Grocery / Other
 
 Management can add, rename, activate, or inactivate categories without a software release.
 

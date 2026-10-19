@@ -11,7 +11,7 @@
 
 Provide trustworthy reports on food received, stock movement, redistribution, waste, donor participation, recipient reach, meal equivalents, and CO2e impact using data captured by Surplus to Supper (S2S).
 
-The Foodiverse impact report informed this requirement, but its donor-network roles, labels, leaderboards, and self-service donor/charity views are not copied because they do not match the current S2S operating or identity model.
+Foodiverse impact, food-category, donor-KPI, daily-compliance, and product-log reports informed this requirement, but their donor-network roles, labels, leaderboards, price reporting, and self-service donor/charity views are not copied because they do not match the current S2S inputs, operating model, or identity model.
 
 ## Reporting principles
 
@@ -138,6 +138,40 @@ Detail columns include:
 | Adjustment Reason | Populated for adjustment rows |
 | Recorded By and At | Management-only detail where required by access policy |
 
+### 7. Category and storage-flow report
+
+Purpose: show the composition and movement of food using the S2S category catalogue.
+
+The report displays:
+
+- Completed received, net redistributed, expired/wasted, and current-stock kg by category.
+- Percentage of the selected total represented by each category.
+- Storage-family grouping such as Ambient, Chilled, Frozen, or Hot only where that classification is explicitly configured.
+- Trends by day, month, or year.
+- A totals table behind any chart so small categories and exact values remain accessible.
+- CSV export of category and storage-family totals and detail.
+
+The user selects one movement basis at a time, such as `Food received` or `Net redistributed`; the report must not combine stages into a single ambiguous total. S2S reports completed operational quantities and does not show Foodiverse-style `Estimate versus Actual` columns because no pre-donation estimate is captured. It also excludes price because S2S does not record product value.
+
+### 8. Donor cadence and delivery reliability report
+
+Purpose: help Branch Management identify expected deliveries, missed collections, and incomplete Intake without treating donors as competitors.
+
+When structured donor cadence and expected-delivery occurrences are available, the report displays:
+
+- Expected delivery occurrences in the selected period.
+- Delivery IDs created for expected occurrences.
+- Submitted deliveries completed.
+- Open deliveries still awaiting completion.
+- Cancelled or `No delivery` outcomes, with reason where captured.
+- Delivery completion rate: submitted expected deliveries divided by expected occurrences whose response window has closed.
+- Received kg and average received kg per completed delivery.
+- Daily exceptions requiring follow-up, followed by monthly/yearly trends.
+
+An expected occurrence is not marked missed while its delivery window remains open. Unscheduled ad-hoc deliveries contribute to donor volume but do not increase the scheduled-delivery completion numerator or denominator.
+
+Until structured cadence, generated expected occurrences, delivery windows, and no-delivery outcomes are implemented, S2S can report completed delivery counts and kilograms by donor but must not publish a `compliance` or `reliability` percentage.
+
 ## Filters and time periods
 
 All reports support only dimensions captured by S2S:
@@ -150,6 +184,7 @@ All reports support only dimensions captured by S2S:
 - Category and storage family where represented by category configuration.
 - Fulfilment method.
 - Movement or adjustment reason.
+- Expected-delivery outcome when donor cadence reporting is available.
 
 Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view modes are not included because S2S does not currently capture those concepts.
 
@@ -181,6 +216,12 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 | Individual beneficiaries or people reached | Not captured | Do not estimate or report this measure |
 | Monetary value of food | Not captured | Excluded from reporting |
 | Donor/recipient labels and leaderboards | Not captured and not an S2S priority | Excluded unless a later S2S use case is approved |
+| Category mix by operational stage | Category and normalized kg exist on stock movements | Report completed received, redistributed, waste, or stock stages separately |
+| Estimate versus actual | No pre-donation estimate is captured | Excluded; completed S2S movement values are the operational record |
+| Food price/value | No price or valuation input is captured | Excluded from reports and exports |
+| Donor cadence/reliability | Delivery cadence is required but structured occurrence generation and outcomes are not implemented | Show donor contribution now; publish rates only after the denominator and outcome rules exist |
+| Donor offers/posts | S2S starts from a Management-created Delivery ID rather than a donor offer | Foodiverse offered/posted/process-success metrics do not apply |
+| Product-level logs | S2S captures category stock lots, not SKU/product lines | Use movement detail; add product reporting only after a separate approved product-capture requirement |
 
 ## Data quality rules
 
@@ -193,6 +234,8 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 - Report calculations use unrounded stored values and round only for display/export according to the approved precision.
 - Branch-local dates use the Branch timezone; cross-Branch reports state the timezone used for grouping.
 - Category, donor, and recipient renames do not alter historical identity because reports group by stable IDs.
+- Donor reliability rates use generated expected-occurrence IDs, not an inferred count of weekdays or a count of manually created Delivery IDs.
+- Ad-hoc deliveries are identified separately from scheduled deliveries so they do not distort cadence rates.
 
 ## Acceptance criteria
 
@@ -209,6 +252,11 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 - `F-006-AC11`: The interface and export label estimates as `meal equivalents` and `CO2e impact`, not actual meals served or measured emissions saved.
 - `F-006-AC12`: Reports do not expose donor, recipient, or actor data outside the user's authorised Branch scope.
 - `F-006-AC13`: Detail rows and CSV exports identify whether normalized kg was calculated, entered directly, or measured.
+- `F-006-AC14`: Category totals for a selected movement basis reconcile to the corresponding report and ledger detail.
+- `F-006-AC15`: The category report does not present completed S2S quantities as donor estimates or monetary value.
+- `F-006-AC16`: A donor delivery-completion rate is shown only when expected occurrences and closed response windows provide a valid denominator.
+- `F-006-AC17`: Open, cancelled/no-delivery, missed, completed, and unscheduled deliveries remain distinct in donor cadence detail.
+- `F-006-AC18`: Product-level and price reports remain unavailable unless their source inputs are introduced through approved requirements.
 
 ## Open decisions
 
@@ -218,6 +266,8 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 4. Approve the waste-reason taxonomy beyond `Expired`.
 5. Confirm whether Volunteers may export Branch summary/detail data.
 6. Confirm the timezone and period-locking policy for cross-Branch reports.
+7. Decide how structured donor cadence creates expected occurrences or Delivery IDs and approve the cancellation/no-delivery reason taxonomy.
+8. Confirm whether storage family is an explicit category attribute or a stock-line attribute before grouping category reports by Ambient, Chilled, Frozen, or Hot.
 
 ## Current implementation
 

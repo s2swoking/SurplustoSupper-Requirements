@@ -47,8 +47,8 @@ The external reference material uses a different term for its donor-to-charity m
 
 1. The user starts from an expected recipient occurrence or creates an Ad hoc Redistribution.
 2. The user chooses one active recipient, service date, method, and service window.
-3. The user adds one or more eligible stock-lot lines. The system recommends first-expiring stock first.
-4. The system validates accepted categories, storage capability, capacity, use-by, available quantity, and entered unit.
+3. The user adds one or more eligible stock-lot lines and chooses Crate, Kilogram, or Unit from the units supported by that category and stock lot. The system recommends first-expiring stock first.
+4. The system previews the entered quantity, canonical physical quantity where available, normalized kg, and conversion snapshots, then validates accepted categories, storage capability, capacity, use-by, and available unreserved stock.
 5. Saving as `Draft` reserves stock without reducing stock on hand.
 6. The user marks the Redistribution `Ready` after its lines have been checked and prepared.
 7. Dispatch posts immutable outbound inventory movements and records who released the stock and when.
@@ -71,6 +71,12 @@ The external reference material uses a different term for its donor-to-charity m
 - One Redistribution belongs to one Branch and one recipient.
 - A Redistribution can contain multiple stock-lot lines and categories.
 - Each line records the entered quantity and unit (`crate`, `kg`, or `unit`) plus normalized kilograms where conversion is available.
+- Crate and Unit are available together only for a unit-enabled category with effective Units per Crate and Average kg per Crate values.
+- For a unit-enabled stock lot, reservations and dispatch use the canonical individual-unit balance. A crate entry reserves `crate quantity × units per crate`; a unit entry reserves the entered unit count.
+- A crate-origin stock lot can therefore be redistributed as whole crates, individual units, or a combination without double-reserving the same stock.
+- A kilogram-only stock lot can be redistributed only in kilograms unless an authorised recount establishes a physical crate/unit count. S2S does not derive an exact count from average weight alone.
+- A crate-only stock lot can be redistributed in crates or measured kilograms according to the approved split/recount rule, but not in individual units unless Unit is enabled.
+- The confirmation preview shows entered quantity/unit, units-per-crate snapshot where applicable, normalized kg, and whether weight is calculated, directly entered, or measured.
 - Category, use-by date, storage state, and inbound lineage are inherited from the selected stock lot rather than retyped as unverified product data.
 - Only categories accepted by the recipient can be allocated.
 - Chilled, frozen, or hot stock can be allocated only where the recipient's approved storage capability permits it.
@@ -159,6 +165,10 @@ Summary and exported totals reconcile to the immutable movement detail. History 
 - `F-005-AC14`: Branch permissions constrain history, records, operational confirmations, and exports consistently.
 - `F-005-AC15`: No S2S redistribution screen, notification, export heading, or record uses the external platform's entity terminology.
 - `F-005-AC16`: S2S does not import old Redistribution history through this workflow; spreadsheet-created new records enter as Draft and follow the normal lifecycle.
+- `F-005-AC17`: A user can redistribute an eligible stock lot in Crates, Kilograms, or Units only when the category and stock-lot tracking basis support the selected unit.
+- `F-005-AC18`: Crate and Unit lines against the same unit-enabled stock lot reserve and dispatch from one canonical unit balance without oversubscription.
+- `F-005-AC19`: A kilogram-only stock lot cannot be redistributed as crates or units unless an authorised recount establishes the physical count.
+- `F-005-AC20`: The line preview and final Redistribution Record preserve the entered unit, conversion snapshots, normalized kg, and weight basis.
 
 ## Open decisions
 
@@ -171,5 +181,5 @@ Summary and exported totals reconcile to the immutable movement detail. History 
 
 - Branch recipients, accepted categories, capacity, method, service window, Draft reservation, Ready, Dispatch, Completed, Cancelled, returns, and immutable outbound movements exist.
 - The current UI creates one stock-lot line at a time; the API and data model support multiple lines.
-- Planned occurrences, recipient cadence, multi-recipient batches, Management-controlled Not completed outcomes with full reversal, generated Redistribution Records, historical search enhancements, and spreadsheet-created Draft records remain to be built.
+- Planned occurrences, recipient cadence, multi-recipient batches, Management-controlled Not completed outcomes with full reversal, generated Redistribution Records, historical search enhancements, spreadsheet-created Draft records, kilogram/unit entry, and canonical unit reservations remain to be built.
 - Partial acceptance is currently represented by recording returned crates after dispatch.

@@ -31,7 +31,7 @@ Management selects `Add charity`.
 - Only Management can create or maintain recipient records.
 - Only active recipients appear in allocation and loading workflows.
 - Accepted categories constrain what can be allocated.
-- Branch, capacity, delivery window, and fulfilment method constrain fulfilment planning.
+- Branch, capacity, delivery window, and Redistribution method constrain Redistribution planning.
 - Inactivation does not change historical allocations or deliveries.
 
 ## Data specification
@@ -44,9 +44,9 @@ Management selects `Add charity`.
 | Registration Required | Boolean | Yes | Determined or defaulted by project type |
 | Branch | Branch reference | Yes | Woking for the initial rollout |
 | Accepted Categories | Category references | Yes | Gates allocation |
-| Crate Capacity | Positive integer | Yes | Capacity per fulfilment event; final meaning to confirm |
+| Crate Capacity | Positive integer | Yes | Capacity per Redistribution event; final meaning to confirm |
 | Delivery Window | Time range | Yes |  |
-| Fulfilment Method | Enum | Yes | S2S Delivers or Charity Collects |
+| Redistribution Method | Enum | Yes | S2S Delivers or Recipient Collects |
 | Contact Name | Text | No |  |
 | Contact Phone | Text | Yes |  |
 | Status | Active/Inactive | Yes | Defaults to Active |
@@ -69,6 +69,6 @@ Management selects `Add charity`.
 ## Current implementation notes
 
 - Management can create and activate/inactivate branch recipients.
-- Accepted categories, per-allocation crate capacity, fulfilment method, delivery window, contact details, and registration-required status are stored.
+- Accepted categories, per-allocation crate capacity, Redistribution method, delivery window, contact details, and registration-required status are stored.
 - Project type remains free text until the final taxonomy is approved.
 - Delivery window and contact phone are currently optional pending confirmation of mandatory-field rules.

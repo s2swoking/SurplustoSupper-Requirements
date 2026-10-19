@@ -34,7 +34,8 @@ Required capability:
 
 - View current warehouse stock.
 - Break stock down by category, weight, and use-by urgency.
-- Record expiry, miscount, and charity-return adjustments in crates, kilograms, or units with an audit trail.
+- Record expiry, miscount, and recipient-return adjustments in crates, kilograms, or units with an audit trail.
+- For categories with fixed packaging, configure Units per Crate and use one canonical unit balance across crate and individual-unit movements; keep kilogram-only lots separate where no physical count exists.
 
 ## Redistribution
 

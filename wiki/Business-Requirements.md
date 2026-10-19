@@ -36,13 +36,13 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 | F-001 | Donor onboarding | Draft | Partial | [Donor onboarding](Donor-Onboarding) |
 | EF-001 | Create Delivery ID | Draft | Core flow built | [Create Delivery ID](Create-Delivery-ID) |
 | EF-002 | Maintain categories | Draft | Partial | [Maintain categories](Maintain-Categories) |
-| EF-003 | Maintain crate weights | Draft | Partial | [Maintain crate weights](Maintain-Crate-Weights) |
+| EF-003 | Maintain crate/unit conversions | Draft | Partial; consolidation planned | [Maintain crate and unit conversions](Maintain-Crate-Weights) |
 | F-002 | Intake | Draft | Core flow built | [Intake](Intake) |
 | F-003 | Inventory management | Draft | Core flow built | [Inventory management](Inventory-Management) |
 | EF-004 | Inventory adjustment | Draft | Partial | [Inventory adjustment](Inventory-Adjustment) |
 | F-004 | Charity onboarding | Draft | Core flow built | [Charity onboarding](Charity-Onboarding) |
 | F-005 | Redistribution | Draft | Core flow built; future capabilities specified | [Redistribution](Redistribution-and-Fulfilment) |
-| F-006 | Impact and operational reporting | Draft | Planned | [Impact and operational reporting](Impact-and-Operational-Reporting) |
+| F-006 | Impact and operational reporting | Draft | Planned; staged build defined | [Impact and operational reporting](Impact-and-Operational-Reporting) |
 
 ## Delivery phases
 
@@ -60,6 +60,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 ### Phase 2: inventory and redistribution — core flow built
 
 - Inventory by category, weight, and use-by urgency.
+- A single Maintain Categories page containing the 56 unique seeded categories, operational units/conversions, and blank editable impact factors.
 - Traceable inventory adjustments.
 - Charity and project profiles, including accepted categories and capacity.
 - Allocation, van loading, delivery/collection, and outbound logging.
@@ -88,9 +89,10 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 
 ## Cross-cutting business rules
 
-- A crate is the standard Intake unit; controlled inventory adjustments can be entered in crates, kilograms, or individual units according to category configuration.
+- A crate is the standard Intake unit; controlled inventory adjustments and Redistributions can be entered in crates, kilograms, or individual units according to category and stock-lot configuration.
 - Crate weight is category-specific and must not be hardcoded globally.
-- Meal-equivalent and CO2e factors are category-specific, expressed per kilogram, effective-dated, and traceable to an approved methodology.
+- Individual-unit handling is enabled only for categories with a reliable positive Units per Crate value; kg per Unit is derived from kg per Crate and Units per Crate.
+- Meal-equivalent and CO2e factors are category-specific, initially blank, expressed per kilogram, effective-dated, and traceable to an approved methodology. Unconfigured factors never default to the external reference values.
 - Donors and categories are managed by Management; volunteers cannot create them during Intake.
 - Intake starts from an existing open Delivery ID.
 - Each intake line saves immediately so several volunteers can work on one delivery.

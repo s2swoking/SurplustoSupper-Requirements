@@ -9,15 +9,29 @@
 
 ## Trigger
 
-Management adds a category or selects an existing category to edit.
+Management opens the single `Maintain Categories` page to review or edit the category catalogue, operational units, crate/unit conversions, and impact factors.
 
 ## Basic flow
 
-1. Management enters or edits the category name.
-2. Management sets its status and permitted inventory units.
-3. Management configures the meal-equivalent and CO2e conversion factors per kilogram.
-4. The system validates and saves the category settings.
-5. Active categories become available across Intake, Inventory, and Redistribution.
+1. The page displays all 56 seeded categories in a searchable, filterable table.
+2. Management selects the Organisation/Branch context and edits a category row or opens its detail panel.
+3. Management sets status, storage family, permitted units, default unit, average kg per crate, and—only where individual-unit handling is appropriate—units per crate.
+4. Management optionally configures meal-equivalent and CO2e factors per kilogram with source and effective date; new factors are blank until approved.
+5. The page previews derived kg per unit and validation/readiness warnings.
+6. The system validates and saves the configuration with an audit event.
+7. Active and operationally ready categories become available across Intake, Inventory, and Redistribution.
+
+## Single-page administration
+
+The `Maintain Categories` page is the Management workspace for category configuration; crate weights, unit conversion, and impact factors do not require separate navigation.
+
+- The table shows Category, Active status, Storage family, Permitted units, Default unit, Average kg/crate, Units/crate, Derived kg/unit, Meals/kg status, CO2e/kg status, and readiness.
+- Search matches category name and stable key. Filters include Active/Inactive, storage family, unit support, missing conversion, and missing factor.
+- Management can edit one row at a time and can bulk-activate/inactivate or bulk-set permitted units only after a confirmation preview.
+- Factor values, methodology/source, and effective date are edited together; no value can be activated without its required metadata.
+- Validation appears on the affected row and in a page summary. Invalid rows do not block saving an unrelated valid row unless Management is performing a bulk action.
+- Readiness is shown separately for operations and impact: a category can be operationally ready while one or both impact factors remain `Unconfigured`.
+- Historical factor and conversion versions can be viewed from the category row but cannot be overwritten.
 
 ## Business rules
 
@@ -25,11 +39,17 @@ Management adds a category or selects an existing category to edit.
 - Inactive categories are hidden from new-work selectors.
 - Existing records retain references to inactive categories.
 - Category names must be unique within the applicable catalogue.
+- The initial 56 categories have stable keys and are inserted idempotently so rerunning a deployment cannot create duplicates.
 - Permitted inventory units can include Crate, Kilogram, and Unit.
 - A category that permits crate transactions must have an active average crate weight before it can be used at Intake.
-- A category that permits unit transactions must have an average unit weight or require a measured total weight when units are recorded.
+- A category permits individual-unit transactions only when `Unit` is enabled and a positive whole-number `Units per Crate` value is configured.
+- For a unit-enabled category, `Derived kg per Unit = Average kg per Crate / Units per Crate`; the derived value is read-only.
+- Categories whose packaging does not have a reliable units-per-crate relationship must not enable Unit. A measured-weight-only item may still be handled in Kilograms.
+- Crate and unit movements for a unit-enabled stock lot use individual units as the canonical handling count. Crates are converted using the effective units-per-crate snapshot.
+- A kilogram-only stock lot does not gain an inferred crate or unit count and can be adjusted or redistributed only in kilograms unless an authorised recount records its physical count.
 - Meal-equivalent and CO2e factors are non-negative decimals expressed per kilogram of food; a factor can be marked Not Applicable for a category excluded from that measure.
-- The initial factors are 2.2 meal equivalents and 3.2 kg CO2e per kilogram, but Management can amend them when the approved reporting methodology changes.
+- Initial meal-equivalent and CO2e factors are blank (`Unconfigured`) for all 56 categories. S2S does not copy example values from an external reference into live calculations.
+- An `Unconfigured` factor is different from a zero factor and from `Not Applicable`.
 - Impact calculations retain the factor values or factor-version reference used at the time so historical reports do not change silently.
 - The reporting configuration defines one qualifying recognition event, such as completed Intake or completed Redistribution; the same food must not be counted at both events.
 
@@ -38,20 +58,26 @@ Management adds a category or selects an existing category to edit.
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
 | Category ID | System-generated | Auto | Primary key |
+| Category Key | Stable text key | Auto | Unique immutable key used by seeds, imports, integrations, and reports |
 | Category Name | Text | Yes | Selected from the initial catalogue below or added by Management |
 | Status | Active/Inactive | Yes | Defaults to Active |
+| Storage Family | Enum | Yes | Ambient, Chilled, Frozen, Hot, Non-food, or Unconfigured pending Management review |
 | Permitted Inventory Units | Multi-select enum | Yes | Crate, Kilogram, Unit; at least one required |
 | Default Inventory Unit | Enum | Yes | Must be one of the permitted units |
-| Average Unit Weight (kg) | Positive decimal | Conditional | Required to calculate kg from unit count unless measured weight is captured with the movement |
-| Meals per kg | Non-negative decimal or N/A | Conditional | Initial food-category value 2.2; required when included in meal-equivalent reporting |
-| CO2e per kg | Non-negative decimal or N/A | Conditional | Initial food-category value 3.2 kg CO2e; required when included in environmental-impact reporting |
-| Factor Effective From | Date/time | Yes | Supports controlled methodology changes |
-| Factor Source/Methodology | Text or URL | Yes | Identifies the approved source and version |
+| Average kg per Crate | Positive decimal | Conditional | Branch-effective conversion; required when Crate is permitted |
+| Units per Crate | Positive whole number | Conditional | Required when Unit is permitted; omitted for categories not managed as individual units |
+| Derived kg per Unit | Calculated decimal | Conditional | Average kg per Crate divided by Units per Crate; read-only |
+| Meals Factor Status | Enum | Yes | Unconfigured, Configured, or Not Applicable; defaults to Unconfigured |
+| Meals per kg | Non-negative decimal | Conditional | Blank initially; required only when Meals Factor Status is Configured |
+| CO2e Factor Status | Enum | Yes | Unconfigured, Configured, or Not Applicable; defaults to Unconfigured |
+| CO2e per kg | Non-negative decimal | Conditional | Blank initially; kg CO2e per kg of food; required only when CO2e Factor Status is Configured |
+| Factor Effective From | Date/time | Conditional | Required for a Configured factor and supports controlled methodology changes |
+| Factor Source/Methodology | Text or URL | Conditional | Required for a Configured factor; identifies approved source and version |
 | Impact Recognition Event | Enum | Yes | Completed Intake or completed Redistribution; normally set consistently across the Organisation |
 
 ## Initial category catalogue
 
-The initial catalogue is based on the supplied Foodiverse reference. Labels are retained as shown in the reference and repeated rows across screenshots are listed once:
+The initial catalogue is based on the supplied Foodiverse reference but is an S2S-managed catalogue. The 56 labels below are unique and repeated rows across screenshots are listed once. The application seed creates every row exactly once with blank impact factors; Management completes operational unit and factor configuration on the Maintain Categories page.
 
 1. Ambient meat
 2. Prepared ambient product with meat
@@ -118,12 +144,19 @@ Management can add, rename, activate, or inactivate categories without a softwar
 - `EF-002-AC2`: An inactive category is hidden from new Intake lines.
 - `EF-002-AC3`: Inactivating a category does not damage historical records.
 - `EF-002-AC4`: Duplicate category names are rejected.
-- `EF-002-AC5`: A new installation provides the initial category catalogue listed above.
-- `EF-002-AC6`: Management can configure permitted units and meal/CO2e factors for each category.
-- `EF-002-AC7`: For 100 kg recorded against factors of 2.2 meals/kg and 3.2 kg CO2e/kg, reporting shows 220 meal equivalents and 320 kg CO2e.
+- `EF-002-AC5`: A new installation provides exactly the 56 unique initial categories listed above, and rerunning the seed creates no duplicates.
+- `EF-002-AC6`: On one Maintain Categories page, Management can configure status, storage family, permitted/default units, average kg per crate, units per crate, and meal/CO2e factors.
+- `EF-002-AC7`: When Management configures 2 meals/kg and 3 kg CO2e/kg for a category, 100 eligible kg produces 200 meal equivalents and 300 kg CO2e; these values are test inputs, not system defaults.
 - `EF-002-AC8`: Changing a factor affects transactions from its effective date and does not rewrite historical impact totals.
 - `EF-002-AC9`: A stock quantity is included in impact reporting once at the configured recognition event and is not double-counted at Intake and Redistribution.
+- `EF-002-AC10`: All seeded meal and CO2e factors start Unconfigured and do not contribute to impact totals until Management activates approved values.
+- `EF-002-AC11`: Enabling Unit requires a positive whole-number Units per Crate and an effective Average kg per Crate.
+- `EF-002-AC12`: The displayed kg per Unit equals the effective kg per Crate divided by Units per Crate and cannot be edited directly.
+- `EF-002-AC13`: A unit-enabled category snapshots units-per-crate and derived kg-per-unit on each posted movement so later configuration changes do not rewrite history.
+- `EF-002-AC14`: A kilogram-only movement does not create an inferred crate or unit count.
+- `EF-002-AC15`: Management can distinguish operational-readiness warnings from impact-factor warnings on the category page.
+- `EF-002-AC16`: Factor and conversion changes are effective-dated, audited, and preserve earlier versions used by posted movements.
 
 ## Current implementation
 
-The database contains a fixed seeded category list and supports editing average crate weight. The 56-item initial catalogue specified above is a requirement and has not been loaded into the current application's database seed, so documenting it does not make the new categories appear in the live system. Adding, renaming, inactivating, configuring multiple units, and maintaining meal/CO2e factors are not built. Category labels and icons are also mirrored in application code, which must be removed or redesigned before categories can be fully dynamic. Implementing the catalogue therefore requires an application data migration or seed update plus removal of the hardcoded labels/icons, followed by deployment to the target environment.
+The database contains a fixed seeded category list and supports editing average crate weight on a separate surface. The 56-item initial catalogue specified above is a requirement and has not been loaded into the current application's database seed, so documenting it does not make the new categories appear in the live system. The single Maintain Categories page, idempotent 56-row seed, stable category keys, storage family, multiple units, units-per-crate conversion, blank factor states, factor versioning, and readiness indicators are not built. Category labels and icons are also mirrored in application code, which must be removed or redesigned before categories can be fully dynamic. Implementing the catalogue therefore requires the application repository, a data migration or seed update, UI/API changes, automated tests, and deployment to the target environment.

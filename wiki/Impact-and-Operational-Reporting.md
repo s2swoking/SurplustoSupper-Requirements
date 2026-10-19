@@ -3,7 +3,7 @@
 | Field | Value |
 | --- | --- |
 | Status | Draft |
-| Implementation | Planned |
+| Implementation | Planned; staged build defined |
 | Actor | Organisation Admin, Branch Manager, Volunteer |
 | Last reviewed | 19 October 2026 |
 
@@ -18,6 +18,7 @@ Foodiverse impact, food-category, donor-KPI, daily-compliance, and product-log r
 - Reports use completed, immutable operational movements rather than draft records or manually entered headline totals.
 - Food received, food redistributed, returns, waste, and stock on hand are separate measures and must not be presented as interchangeable.
 - Every weight is reported in normalized kilograms while retaining the quantity and unit originally entered.
+- Crates and units are shown within their category and conversion context; reports never add raw crate or unit counts across categories with different conversions.
 - Reports distinguish weight calculated from a category average from directly entered or measured weight.
 - Meal-equivalent and CO2e figures are estimates, not actual meals served or directly measured emissions.
 - Impact is recognized at one configured event only: completed Intake or completed Redistribution. The same food must not be counted at both events.
@@ -40,7 +41,7 @@ Foodiverse impact, food-category, donor-KPI, daily-compliance, and product-log r
 | Meal equivalents | Impact-eligible kg multiplied by the effective meals-per-kg factor | Qualifying movement and factor snapshot |
 | CO2e impact (kg) | Impact-eligible kg multiplied by the effective kg-CO2e-per-kg factor | Qualifying movement and factor snapshot |
 | Participating donors | Distinct donors with at least one submitted delivery containing positive food kg in the period | Donor and Delivery |
-| Recipients served | Distinct recipients with at least one completed fulfilment containing positive net redistributed kg in the period | Recipient and Fulfilment |
+| Recipients served | Distinct recipients with at least one completed Redistribution containing positive net redistributed kg in the period | Recipient and Redistribution |
 | Factor coverage | Percentage of otherwise eligible kg with valid meal and CO2e factors | Category and factor snapshot |
 
 `Impact-eligible kg` is the normalized food weight at the Organisation's configured recognition event. The recommended S2S default is completed Redistribution because it excludes food that was received but subsequently expired or was otherwise lost. The final recognition event remains a product-owner decision.
@@ -93,8 +94,8 @@ Purpose: show which charities and projects received stock from S2S.
 
 The report displays:
 
-- Recipient, project type, and fulfilment method.
-- Number of completed fulfilments.
+- Recipient, project type, and Redistribution method.
+- Number of completed Redistributions.
 - Gross dispatched, returned, and net redistributed kg.
 - Category breakdown.
 - Meal equivalents and CO2e impact when Redistribution is the configured recognition event.
@@ -127,7 +128,7 @@ Detail columns include:
 | Branch | Enforced by access scope |
 | Movement ID and Type | Intake, dispatch, return, or adjustment |
 | Donor and Delivery ID | Populated for inbound lineage |
-| Recipient and Fulfilment ID | Populated for outbound lineage |
+| Recipient and Redistribution ID | Populated for outbound lineage |
 | Category and Use-by Date | Stock classification |
 | Entered Quantity and Unit | Original crates, kg, or units |
 | Normalized Weight (kg) | Weight included in calculations |
@@ -182,7 +183,7 @@ All reports support only dimensions captured by S2S:
 - Donor and donor type.
 - Recipient and project type.
 - Category and storage family where represented by category configuration.
-- Fulfilment method.
+- Redistribution method.
 - Movement or adjustment reason.
 - Expected-delivery outcome when donor cadence reporting is available.
 
@@ -208,9 +209,9 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 | --- | --- | --- |
 | Received kg by donor/category/use-by | Captured on submitted Delivery and Intake lines | Can be reported from current required inputs |
 | Participating donors | Donor and submitted Delivery references exist | Count distinct donor IDs, not names |
-| Redistributed kg and recipients served | Completed fulfilments, outbound movements, and returns exist in the requirements | Report net completed movement only |
+| Redistributed kg and recipients served | Completed Redistributions, outbound movements, and returns exist in the requirements | Report net completed movement only |
 | Expired kg | `Expired` adjustment type exists | Broader waste reporting needs an approved waste-reason taxonomy |
-| Meal and CO2e factors | Defined as category configuration but not implemented | Do not publish impact estimates until factor coverage and versioning are operational |
+| Meal and CO2e factors | Category fields are specified but seeded blank and not implemented | Do not publish impact estimates until Management configures approved values and factor coverage/versioning are operational |
 | Surplus versus purchased/appeal stock | Not currently captured | S2S must confirm that all food intake is surplus or add an impact-eligibility/source field before relying on this distinction |
 | Actual meals served | Not captured | Report only `meal equivalents` |
 | Individual beneficiaries or people reached | Not captured | Do not estimate or report this measure |
@@ -229,13 +230,46 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 - A completed movement is counted once using its immutable ID.
 - Returns reduce net redistribution and never create a new donor contribution.
 - Reversal movements offset the original in the applicable reporting period without deleting history.
-- Missing or Not Applicable factors do not default to 2.2 or 3.2 silently; affected kg is disclosed through factor coverage.
+- Missing or Not Applicable factors do not silently receive a numeric default; affected kg is disclosed through factor coverage.
 - Calculated weight is labelled as calculated in detail and export data; it must not be described as scale-measured weight.
 - Report calculations use unrounded stored values and round only for display/export according to the approved precision.
 - Branch-local dates use the Branch timezone; cross-Branch reports state the timezone used for grouping.
 - Category, donor, and recipient renames do not alter historical identity because reports group by stable IDs.
 - Donor reliability rates use generated expected-occurrence IDs, not an inferred count of weekdays or a count of manually created Delivery IDs.
 - Ad-hoc deliveries are identified separately from scheduled deliveries so they do not distort cadence rates.
+
+## Staged report build
+
+Reports are built in dependency order so useful operational reporting is available before impact factors are approved.
+
+### Release 1: operational ledger reports
+
+1. Build a shared Branch-scoped reporting query/read model from immutable Intake, Redistribution, return, and adjustment movements.
+2. Build movement detail with date, Branch, donor, recipient, category, entered quantity/unit, conversion snapshots, normalized kg, movement type, reason, and source IDs.
+3. Add identical filters and audited CSV export to the detail view.
+4. Build Food-flow and inventory reconciliation from the same detail rows.
+5. Build Category and storage-flow, Donor contribution, Recipient distribution, and Waste/adjustment reports.
+6. Add drill-through from every summary total to the filtered movement detail that reproduces it.
+
+Release 1 displays operational kilograms and native-unit detail without meal-equivalent or CO2e totals. Where impact cards will appear, the interface shows `Impact factors not configured` and links Management to Maintain Categories; it does not substitute zero or the external reference values.
+
+### Release 2: impact reporting
+
+1. Add effective-dated meal and CO2e factor versions and snapshot/reference them on the configured recognition movement.
+2. Add factor coverage and explicit Configured, Unconfigured, and Not Applicable treatment.
+3. Enable Impact overview meal-equivalent and CO2e totals only for covered kilograms.
+4. Add methodology/version labels, factor drill-through, and cross-Branch comparison after permissions are verified.
+
+### Release 3: cadence reliability
+
+Build donor cadence/reliability only after structured expected occurrences, response windows, and outcome rules exist. The report must not infer a denominator from weekdays or created Delivery IDs.
+
+### Build verification gates
+
+- Each report is released only when its summary totals equal its detail query and CSV export for the same filters.
+- Food-flow reconciliation must equal zero for seeded automated test scenarios covering Intake, crate/unit/kg adjustments, Redistribution, partial returns, full Not completed reversal, and compensating corrections.
+- Unit-enabled test data includes crate-to-unit splits and proves that raw counts are not combined across categories.
+- Performance is measured with representative multi-Branch movement volume before enabling Organisation-wide ranges.
 
 ## Acceptance criteria
 
@@ -271,4 +305,4 @@ Filters for Foodiverse labels, donor-network memberships, or arbitrary user-view
 
 ## Current implementation
 
-Operational dashboards and stock totals exist, but the complete report suite, factor versioning, factor coverage, multi-Branch comparison, report-detail drill-through, and audited filtered CSV exports remain to be built.
+Operational dashboards and stock totals exist, but the shared reporting read model, complete report suite, factor versioning, factor coverage, multi-Branch comparison, report-detail drill-through, and audited filtered CSV exports remain to be built. Application source is required to begin Release 1 implementation; it is not contained in this requirements repository.

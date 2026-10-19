@@ -20,5 +20,4 @@
 ### Reference data
 
 - [Categories](Maintain-Categories)
-- [Crate Weights](Maintain-Crate-Weights)
 - [Requirements Guide](Requirements-Guide)

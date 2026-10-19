@@ -25,6 +25,5 @@ The platform is being designed for Woking, Kingston, and future S2S branches. It
 ## Reference data
 
 - [Maintain Categories](Maintain-Categories)
-- [Maintain Crate Weights](Maintain-Crate-Weights)
 
 These requirements remain open for operational feedback. Their documented status shows business maturity separately from implementation progress.

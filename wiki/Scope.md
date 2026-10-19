@@ -4,7 +4,7 @@
 | --- | --- |
 | Status | Draft |
 | Implementation | Core operations built |
-| Last reviewed | 6 October 2026 |
+| Last reviewed | 19 October 2026 |
 
 ## Donors
 
@@ -34,7 +34,7 @@ Required capability:
 
 - View current warehouse stock.
 - Break stock down by category, weight, and use-by urgency.
-- Record expiry, miscount, and charity-return adjustments with an audit trail.
+- Record expiry, miscount, and charity-return adjustments in crates, kilograms, or units with an audit trail.
 
 ## Redistribution
 
@@ -60,4 +60,4 @@ For MVP planning, Kitchen and Markets may be represented as recipient projects. 
 
 The current application covers branch creation/switching, donor setup, Delivery ID intake, category weights, immutable inventory, controlled adjustments, recipient onboarding, manual allocation, loading, dispatch, completion, returns, use-by alerts, and operational dashboards.
 
-Still outside the current boundary are automated allocation, route/van optimisation, recurring charity cadence, multi-unit stock, partial acceptance beyond a returned-crate movement, stock transfers, and deeper Organisation reporting.
+Still outside the current boundary are automated allocation, route/van optimisation, recurring charity cadence, partial acceptance beyond a returned-crate movement, stock transfers, and deeper Organisation reporting. Multi-unit inventory adjustments are now an agreed requirement but are not yet implemented.

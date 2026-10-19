@@ -2,7 +2,7 @@
 
 Status: Draft
 
-Last reviewed: 6 October 2026
+Last reviewed: 19 October 2026
 
 This Wiki is the public source of truth for product requirements. Requirements remain `Draft` until an owner approves them. Implementation status records what the current application does; it does not imply business approval.
 
@@ -72,7 +72,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 - Cross-branch reporting and stock transfers.
 - Offline intake with queued synchronisation.
 - Delivery and van-load QR codes.
-- Organisation dashboards for rescued weight, reach, waste, expiry, meals, and agreed carbon measures.
+- Organisation dashboards for rescued weight, reach, waste, expiry, meal equivalents, and CO2e impact using configurable, effective-dated category factors.
 
 ## Mandatory platform capabilities
 
@@ -86,8 +86,9 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 
 ## Cross-cutting business rules
 
-- A crate is the standard inbound and outbound unit unless the open unit-of-measure decision changes this.
+- A crate is the standard Intake unit; controlled inventory adjustments can be entered in crates, kilograms, or individual units according to category configuration.
 - Crate weight is category-specific and must not be hardcoded globally.
+- Meal-equivalent and CO2e factors are category-specific, expressed per kilogram, effective-dated, and traceable to an approved methodology.
 - Donors and categories are managed by Management; volunteers cannot create them during Intake.
 - Intake starts from an existing open Delivery ID.
 - Each intake line saves immediately so several volunteers can work on one delivery.
@@ -98,13 +99,13 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 
 ## Open decisions
 
-1. Confirm the category taxonomy and whether storage state (Ambient, Chilled, Frozen, Hot) belongs to the category or stock line.
-2. Confirm whether inventory supports units other than crates.
-3. Confirm whether carbon dioxide impact is stored per category or crate.
-4. Confirm how recurring donor delivery days should create or suggest Delivery IDs.
-5. Confirm prioritisation rules for allocations across recipient project types.
-6. Confirm the relationship with Foodiverse and avoid duplicating donor-side offer management.
-7. Confirm whether the S2S rota and volunteer QR check-in tools are part of this product.
+1. Confirm whether storage state (Ambient, Chilled, Frozen, Hot) belongs to the category or stock line.
+2. Confirm how recurring donor delivery days should create or suggest Delivery IDs.
+3. Confirm prioritisation rules for allocations across recipient project types.
+4. Confirm the relationship with Foodiverse and avoid duplicating donor-side offer management.
+5. Confirm whether the S2S rota and volunteer QR check-in tools are part of this product.
+6. Approve the reporting methodology, ownership, precision, and review cycle for meal-equivalent and CO2e factors.
+7. Confirm whether measured crate/unit weights override configured averages automatically or require approval.
 
 ## Out of scope for the current build
 

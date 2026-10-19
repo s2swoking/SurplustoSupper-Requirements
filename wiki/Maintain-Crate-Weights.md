@@ -5,7 +5,7 @@
 | Status | Draft |
 | Implementation | Partial |
 | Actor | Management |
-| Last reviewed | 5 October 2026 |
+| Last reviewed | 19 October 2026 |
 
 ## Preconditions
 
@@ -50,5 +50,7 @@ Management can update or CSV-import a Branch's average crate weight, positive-nu
 
 ## Open questions
 
-- Should carbon dioxide impact be captured per category, per crate, or per kilogram?
 - Should weight changes be effective-dated for historical reporting?
+- When an actual measured crate weight is available, should it override the category average automatically or require Management approval?
+
+Meal-equivalent and CO2e impact factors are maintained per kilogram on the category record; see [Maintain Categories](Maintain-Categories).

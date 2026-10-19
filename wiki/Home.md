@@ -20,6 +20,7 @@ The platform is being designed for Woking, Kingston, and future S2S branches. It
 - [Inventory Adjustment](Inventory-Adjustment)
 - [Charity Onboarding](Charity-Onboarding)
 - [Redistribution and Fulfilment](Redistribution-and-Fulfilment)
+- [Impact and Operational Reporting](Impact-and-Operational-Reporting)
 
 ## Reference data
 

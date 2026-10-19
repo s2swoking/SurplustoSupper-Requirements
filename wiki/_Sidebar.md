@@ -15,6 +15,7 @@
 - [Inventory Adjustment](Inventory-Adjustment)
 - [Charity Onboarding](Charity-Onboarding)
 - [Redistribution](Redistribution-and-Fulfilment)
+- [Impact & Reporting](Impact-and-Operational-Reporting)
 
 ### Reference data
 

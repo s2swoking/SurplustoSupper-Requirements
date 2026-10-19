@@ -54,6 +54,7 @@ For MVP planning, Kitchen and Markets may be represented as recipient projects. 
 
 - Authentication and role-based access for Management and Volunteers.
 - Operational dashboards.
+- Auditable impact, donor, recipient, waste, and inventory-reconciliation reports with filtered CSV export.
 - Organisation and Branch administration.
 
 ## Delivery boundary

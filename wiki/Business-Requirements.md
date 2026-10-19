@@ -42,6 +42,7 @@ The target tenancy model is `Organisation -> Branch`. Woking must be represented
 | EF-004 | Inventory adjustment | Draft | Partial | [Inventory adjustment](Inventory-Adjustment) |
 | F-004 | Charity onboarding | Draft | Core flow built | [Charity onboarding](Charity-Onboarding) |
 | F-005 | Redistribution and fulfilment | Draft | Core flow built | [Redistribution and fulfilment](Redistribution-and-Fulfilment) |
+| F-006 | Impact and operational reporting | Draft | Planned | [Impact and operational reporting](Impact-and-Operational-Reporting) |
 
 ## Delivery phases
 
